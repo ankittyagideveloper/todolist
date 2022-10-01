@@ -15,15 +15,13 @@ function ProgressiveImage(props) {
   }, [src]);
 
   return (
-    <div>
-      <img
-        src={imgSrc}
-        height={height}
-        width={width}
-        alt="bgImg"
-        style={{ position: "absolute" }}
-      />
-    </div>
+    <img
+      src={imgSrc}
+      height={height}
+      width={width}
+      style={{ position: "absolute", backgroundSize: "cover" }}
+      alt="bgImg"
+    />
   );
 }
 

@@ -4,6 +4,9 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, Input, List, ListItem, ListItemText } from "@mui/material";
 import { jsPDF } from "jspdf";
+import largeImg from "../Assets/largeImg.jpg";
+import tinyImg from "../Assets/tinyImg.jpg";
+import ProgressiveImage from "../ProgressiveImage";
 
 const initialVal = JSON.parse(localStorage.getItem("data") || "[]");
 const reducer = (state, action) => {
@@ -50,6 +53,12 @@ function Todo() {
   };
   return (
     <>
+      <ProgressiveImage
+        src={largeImg}
+        placeholder={tinyImg}
+        height={"653px"}
+        width={"100%"}
+      />
       <div
         style={{
           display: "flex",
@@ -61,6 +70,7 @@ function Todo() {
         <h1>Todo</h1>
         <form onSubmit={SetData}>
           <Input
+            style={{ color: "white" }}
             list="taskList"
             type="text"
             placeholder="Please add a task"
@@ -88,7 +98,15 @@ function Todo() {
         <List style={{ display: "flex", justifyContent: "center" }}>
           <ul>
             {data?.map(({ task, id }) => (
-              <ListItem key={id}>
+              <ListItem
+                key={id}
+                style={{
+                  background: "white",
+                  margin: "5px",
+                  borderRadius: "10px",
+                  fontWeight: "bold",
+                }}
+              >
                 <ListItemText primary={task} />
 
                 <CancelIcon
