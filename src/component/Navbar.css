@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.nav {
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  padding: 0 40px;
+}
+.title {
+  font-size: 25px;
+}
+.nav a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav ul {
+  display: flex;
+  gap: 30px;
+}

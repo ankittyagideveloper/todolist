@@ -4,10 +4,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, Input, List, ListItem, ListItemText } from "@mui/material";
 import { jsPDF } from "jspdf";
-import ProgressiveImage from "./ProgressiveImage";
-import largeImg from "./Assets/largeImg.jpg";
-import tinyImg from "./Assets/tinyImg.jpg";
-import "./App.css";
 
 const initialVal = JSON.parse(localStorage.getItem("data") || "[]");
 const reducer = (state, action) => {
@@ -23,7 +19,8 @@ const reducer = (state, action) => {
       break;
   }
 };
-function App() {
+
+function Todo() {
   const doc = new jsPDF();
   const [input, setInput] = useState("");
   const [data, dispatch] = useReducer(reducer, initialVal);
@@ -52,13 +49,7 @@ function App() {
     doc.save("TodoList.pdf");
   };
   return (
-    <div style={{ margin: 0, padding: 0 }}>
-      <ProgressiveImage
-        src={largeImg}
-        placeholder={tinyImg}
-        height={"100%"}
-        width={"100%"}
-      />
+    <>
       <div
         style={{
           display: "flex",
@@ -70,7 +61,6 @@ function App() {
         <h1>Todo</h1>
         <form onSubmit={SetData}>
           <Input
-            style={{ color: "#fff" }}
             list="taskList"
             type="text"
             placeholder="Please add a task"
@@ -99,7 +89,7 @@ function App() {
           <ul>
             {data?.map(({ task, id }) => (
               <ListItem key={id}>
-                <ListItemText primary={task} style={{ color: "#fff" }} />
+                <ListItemText primary={task} />
 
                 <CancelIcon
                   style={{ color: "darkred" }}
@@ -111,8 +101,8 @@ function App() {
           </ul>
         </List>
       </div>
-    </div>
+    </>
   );
 }
 
-export default App;
+export default Todo;
