@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4, v4 } from "uuid";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,26 +7,16 @@ import { jsPDF } from "jspdf";
 import largeImg from "../Assets/largeImg.jpg";
 import tinyImg from "../Assets/tinyImg.jpg";
 import ProgressiveImage from "../ProgressiveImage";
-
-const initialVal = JSON.parse(localStorage.getItem("data") || "[]");
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "ADD_TODO":
-      localStorage.setItem("data", JSON.stringify([...state, action.payload]));
-      return [...state, action.payload];
-
-    case "DELETE_TASK":
-      localStorage.setItem("data", JSON.stringify(action.payload.newList));
-      return action.payload.newList;
-    default:
-      break;
-  }
-};
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, deleteTodo } from "../reducer/todoSlice";
+import TodoList from "./TodoList";
 
 function Todo() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.todo);
+
   const doc = new jsPDF();
   const [input, setInput] = useState("");
-  const [data, dispatch] = useReducer(reducer, initialVal);
 
   const SetData = (event) => {
     event.preventDefault();
@@ -35,16 +25,11 @@ function Todo() {
       id: v4(),
     };
     if (input) {
-      dispatch({ type: "ADD_TODO", payload: newTask });
+      dispatch(addTodo(newTask));
       setInput("");
     }
   };
-  const deleteTask = (taskid) => {
-    let newList = data.filter((task) => {
-      return task.id !== taskid;
-    });
-    dispatch({ type: "DELETE_TASK", payload: { newList } });
-  };
+
   const downloadPdf = () => {
     doc.text("Todo", 10, 10);
     let printData = data.map((task) => task.task);
@@ -77,11 +62,7 @@ function Todo() {
             value={input}
             onChange={(event) => setInput(event.target.value)}
           />
-          <datalist id="taskList">
-            {data.map(({ task }) => (
-              <option value={task} />
-            ))}
-          </datalist>
+
           <Button variant="contained" type="submit">
             Go
           </Button>
@@ -94,28 +75,15 @@ function Todo() {
           </Button>
         </form>
       </div>
+
       <div>
         <List style={{ display: "flex", justifyContent: "center" }}>
           <ul>
-            {data?.map(({ task, id }) => (
-              <ListItem
-                key={id}
-                style={{
-                  background: "white",
-                  margin: "5px",
-                  borderRadius: "10px",
-                  fontWeight: "bold",
-                }}
-              >
-                <ListItemText primary={task} />
-
-                <CancelIcon
-                  style={{ color: "darkred" }}
-                  onClick={() => deleteTask(id)}
-                ></CancelIcon>
-                <EditIcon></EditIcon>
-              </ListItem>
-            ))}
+            {data &&
+              data?.map((task) => {
+                console.log(task, "hello");
+                return <TodoList task={task} />;
+              })}
           </ul>
         </List>
       </div>
