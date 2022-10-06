@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { v4 as uuidv4, v4 } from "uuid";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
-import { Button, Input, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  FormGroup,
+  Input,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import { jsPDF } from "jspdf";
 import largeImg from "../Assets/largeImg.jpg";
 import tinyImg from "../Assets/tinyImg.jpg";
@@ -10,6 +18,7 @@ import ProgressiveImage from "../ProgressiveImage";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, deleteTodo } from "../reducer/todoSlice";
 import TodoList from "./TodoList";
+import Switch from "@mui/material/Switch";
 
 function Todo() {
   const dispatch = useDispatch();
@@ -17,12 +26,13 @@ function Todo() {
 
   const doc = new jsPDF();
   const [input, setInput] = useState("");
-
+  const [priority, setPriority] = useState(false);
   const SetData = (event) => {
     event.preventDefault();
     let newTask = {
       task: input,
       id: v4(),
+      priority: priority,
     };
     if (input) {
       dispatch(addTodo(newTask));
@@ -62,7 +72,10 @@ function Todo() {
             value={input}
             onChange={(event) => setInput(event.target.value)}
           />
-
+          <Switch
+            checked={priority}
+            onChange={() => setPriority((state) => !state)}
+          />
           <Button variant="contained" type="submit">
             Go
           </Button>
